@@ -55,7 +55,7 @@ fun Profile(modifier: Modifier) {
                 painter = painterResource(id = R.drawable.foto_profil),
                 contentDescription = "Foto profil",
                 modifier = Modifier
-                    .size(120.dp)
+                    .size(180.dp)
                     .clip(CircleShape)
             )
             Spacer(modifier = Modifier.height(16.dp))
