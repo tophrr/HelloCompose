@@ -37,53 +37,52 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             HelloComposeTheme {
-                Surface(
-                    modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background
-                ) {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(24.dp),
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Image(
-                            painter = painterResource(id = R.drawable.foto_profil),
-                            contentDescription = "Foto profil",
-                            modifier = Modifier
-                                .size(120.dp)
-                                .clip(CircleShape)
-                        )
-                        Spacer(modifier = Modifier.height(16.dp))
-                        Text(
-                            text = "Christopher Marchel Mark Gijoh",
-                            style = MaterialTheme.typography.headlineLarge,
-                            textAlign = TextAlign.Center
-                        )
-                        Text(
-                            text = "NIM: 01082240011",
-                            style = MaterialTheme.typography.bodyLarge,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                    }
-                }
+                Profile(modifier = Modifier.fillMaxSize())
             }
         }
     }
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!", modifier = modifier
-    )
+fun Profile(modifier: Modifier) {
+    Surface(
+        modifier = modifier, color = MaterialTheme.colorScheme.background
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(24.dp),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.foto_profil),
+                contentDescription = "Foto profil",
+                modifier = Modifier
+                    .size(120.dp)
+                    .clip(CircleShape)
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            Text(
+                text = "Christopher Marchel Mark Gijoh",
+                style = MaterialTheme.typography.headlineLarge,
+                textAlign = TextAlign.Center
+            )
+            Text(
+                text = "NIM: 01082240011",
+                style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        }
+    }
 }
+
 
 @Preview(name = "Light Mode", showBackground = true)
 @Preview(name = "Dark Mode", uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
 @Composable
-fun GreetingPreview() {
+fun ProfilePreview() {
     HelloComposeTheme {
-        Greeting("Android")
+        Profile(modifier = Modifier.fillMaxSize())
     }
 }
