@@ -55,7 +55,7 @@ fun ProfileScreen() {
                         .background(MaterialTheme.colorScheme.primary)
                 ) {
                     Text(
-                        text = "DH",
+                        text = "CM",
                         modifier = Modifier.align(Alignment.Center),
                         style = MaterialTheme.typography.headlineMedium,
                         color = MaterialTheme.colorScheme.onPrimary
@@ -63,14 +63,19 @@ fun ProfileScreen() {
                 }
                 Spacer(Modifier.height(12.dp))
                 Text(
-                    text = "Dr. David Hareva",
+                    text = "Christopher M. M. Gijoh",
                     style = MaterialTheme.typography.titleLarge,
                     color = MaterialTheme.colorScheme.onPrimaryContainer
                 )
                 Text(
-                    text = "Dosen Teknik Informatika",
+                    text = "Mahasiswa Informatika",
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.7f)
+                )
+                Text(
+                    text = "NIM 01082240011",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.6f)
                 )
             }
         }
@@ -82,9 +87,9 @@ fun ProfileScreen() {
                 .padding(horizontal = 16.dp),
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
-            StatItem(label = "Mahasiswa", value = "120")
-            StatItem(label = "Mata Kuliah", value = "4")
-            StatItem(label = "Publikasi", value = "23")
+            StatItem(label = "Semester", value = "5")
+            StatItem(label = "SKS", value = "144")
+            StatItem(label = "IPK", value = "3.72")
         }
 
         Spacer(Modifier.height(24.dp))
@@ -92,7 +97,7 @@ fun ProfileScreen() {
         Spacer(Modifier.height(16.dp))
 
         listOf(
-            Icons.Default.Email to "david.hareva@university.ac.id",
+            Icons.Default.Email to "01082240011@student.uph.edu",
             Icons.Default.Phone to "+62 812 3456 7890",
             Icons.Default.LocationOn to "Tangerang, Indonesia"
         ).forEach { (icon, text) ->
