@@ -32,7 +32,17 @@ val dummyMahasiswa = listOf(
     Mahasiswa("Fred White", "01082240007", 3.88),
     Mahasiswa("Johnny Graham", "01082240008", 2.80),
     Mahasiswa("Andrew Woolfolk", "01082240009", 3.65),
-    Mahasiswa("Sonny Emory", "01082240010", 3.20)
+    Mahasiswa("Sonny Emory", "01082240010", 3.20),
+    Mahasiswa("Sheldon Reynolds", "01082240011", 3.55),
+    Mahasiswa("Don Myrick", "01082240012", 3.70),
+    Mahasiswa("Louis Satterfield", "01082240013", 3.05),
+    Mahasiswa("Rahmlee Michael Davis", "01082240014", 3.60),
+    Mahasiswa("Michael Harris", "01082240015", 3.30),
+    Mahasiswa("Gary Bias", "01082240016", 3.80),
+    Mahasiswa("Vance Taylor", "01082240017", 2.90),
+    Mahasiswa("Morris Pleasure", "01082240018", 3.45),
+    Mahasiswa("Myron McKinnon", "01082240019", 3.15),
+    Mahasiswa("Rinaldo Stewart", "01082240020", 3.25)
 )
 
 @Composable
