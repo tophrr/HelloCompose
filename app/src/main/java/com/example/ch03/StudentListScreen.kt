@@ -8,12 +8,18 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.FilterChip
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -22,6 +28,15 @@ import com.example.ch03.ui.theme.Ch03Theme
 import android.content.res.Configuration
 
 data class Mahasiswa(val nama: String, val nim: String, val ipk: Double)
+
+data class Kategori(val nama: String, val cocok: (Double) -> Boolean)
+
+val kategoriList = listOf(
+    Kategori("Semua") { true },
+    Kategori("Cumlaude (>= 3.5)") { it >= 3.5 },
+    Kategori("Baik (3.0-3.49)") { it >= 3.0 && it < 3.5 },
+    Kategori("Perlu Perbaikan (< 3.0)") { it < 3.0 }
+)
 
 val dummyMahasiswa = listOf(
     Mahasiswa("Maurice White", "01082240001", 3.85),
@@ -48,7 +63,28 @@ val dummyMahasiswa = listOf(
 
 @Composable
 fun StudentListScreen() {
-    DaftarMahasiswa(mahasiswaList = dummyMahasiswa)
+    var selectedKategori by remember { mutableStateOf(kategoriList.first()) }
+    val filtered = dummyMahasiswa.filter { selectedKategori.cocok(it.ipk) }
+
+    Column(modifier = Modifier.fillMaxSize()) {
+        LazyRow(
+            modifier = Modifier.fillMaxWidth(),
+            contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            items(
+                items = kategoriList,
+                key = { it.nama }
+            ) { kategori ->
+                FilterChip(
+                    selected = kategori == selectedKategori,
+                    onClick = { selectedKategori = kategori },
+                    label = { Text(kategori.nama) }
+                )
+            }
+        }
+        DaftarMahasiswa(mahasiswaList = filtered)
+    }
 }
 
 @Composable
