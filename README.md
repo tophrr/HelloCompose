@@ -1,5 +1,7 @@
 # Praktikum 3 Starter - Jetpack Compose Fundamentals
 
+**Christopher M. M. Gijoh - 01082240011**
+
 Folder ini adalah **starter project** untuk Praktikum Pertemuan 3. Tujuannya
 bukan menulis semua kode sekaligus, tetapi melengkapi file Kotlin satu per satu
 dengan bantuan README ini.
