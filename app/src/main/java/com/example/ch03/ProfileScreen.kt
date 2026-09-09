@@ -31,6 +31,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.ch03.ui.theme.Ch03Theme
+import android.content.res.Configuration
 
 @Composable
 fun ProfileScreen() {
@@ -140,10 +141,18 @@ fun InfoRow(icon: ImageVector, text: String) {
     }
 }
 
-@Preview(showBackground = true, showSystemUi = true)
+@Preview(showBackground = true, showSystemUi = true, uiMode = Configuration.UI_MODE_NIGHT_NO)
 @Composable
 fun ProfileScreenPreview() {
     Ch03Theme {
+        ProfileScreen()
+    }
+}
+
+@Preview(showBackground = true, showSystemUi = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+fun ProfileScreenPreviewDark() {
+    Ch03Theme(darkTheme = true) {
         ProfileScreen()
     }
 }

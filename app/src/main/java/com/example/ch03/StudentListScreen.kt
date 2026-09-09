@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.ch03.ui.theme.Ch03Theme
+import android.content.res.Configuration
 
 data class Mahasiswa(val nama: String, val nim: String, val ipk: Double)
 
@@ -127,10 +128,18 @@ fun MahasiswaCard(mahasiswa: Mahasiswa) {
     }
 }
 
-@Preview(showBackground = true, showSystemUi = true)
+@Preview(showBackground = true, showSystemUi = true, uiMode = Configuration.UI_MODE_NIGHT_NO)
 @Composable
 fun StudentListScreenPreview() {
     Ch03Theme {
+        StudentListScreen()
+    }
+}
+
+@Preview(showBackground = true, showSystemUi = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+fun StudentListScreenPreviewDark() {
+    Ch03Theme(darkTheme = true) {
         StudentListScreen()
     }
 }
