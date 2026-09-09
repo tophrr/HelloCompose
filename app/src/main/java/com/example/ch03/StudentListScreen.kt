@@ -60,11 +60,34 @@ fun DaftarMahasiswa(
         contentPadding = PaddingValues(16.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
+        item {
+            Column(modifier = Modifier.padding(bottom = 8.dp)) {
+                Text(
+                    text = "Daftar Mahasiswa",
+                    style = MaterialTheme.typography.titleLarge
+                )
+                Text(
+                    text = "Jurusan Informatika",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+        }
         items(
             items = mahasiswaList,
             key = { it.nim }
         ) { mahasiswa ->
             MahasiswaCard(mahasiswa)
+        }
+        item {
+            Text(
+                text = "Total ${mahasiswaList.size} mahasiswa",
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 12.dp),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
         }
     }
 }
