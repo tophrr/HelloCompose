@@ -50,18 +50,14 @@ fun RegistrasiScreen() {
     var password             by rememberSaveable { mutableStateOf("") }
     var konfirmasiPassword   by rememberSaveable { mutableStateOf("") }
 
-    // TODO 3e: ganti `true` di bawah dengan `derivedStateOf` yang menggabungkan
-    //          4 validasi (3a-3d) di atas. Contoh kerangka:
-    //
-    // val isFormValid by remember {
-    //     derivedStateOf {
-    //         nama.isNotBlank() &&
-    //             email.contains("@") &&
-    //             password.length >= 8 &&
-    //             password == konfirmasiPassword
-    //     }
-    // }
-    val isFormValid = true
+    val isFormValid by remember {
+        derivedStateOf {
+            nama.isNotBlank() &&
+                email.contains("@") &&
+                password.length >= 8 &&
+                password == konfirmasiPassword
+        }
+    }
 
     Column(
         modifier            = Modifier
