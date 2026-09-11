@@ -10,6 +10,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -45,18 +46,33 @@ import com.example.ch04starter.ui.theme.Ch04StarterTheme
 //         slide UDF), baru dua field lain murni derived dari situ.
 // ============================================================================
 
+enum class SuhuField { CELSIUS, FAHRENHEIT, KELVIN }
+
 @Composable
 fun SuhuScreen() {
-    var celsiusText by rememberSaveable { mutableStateOf("0") }
+    // Single source of truth: hanya field yang sedang aktif diketik yang
+    // menyimpan teks mentah; dua field lain murni nilai turunan.
+    var activeField by rememberSaveable { mutableStateOf(SuhuField.CELSIUS) }
+    var activeText  by rememberSaveable { mutableStateOf("0") }
 
-    // TODO 2a: ganti 0f di bawah dengan hasil parse `celsiusText` yang aman
-    //          (mis. `celsiusText.toFloatOrNull() ?: 0f`)
-    val celsius = 0f
+    // Derivasikan Celsius dari field yang aktif (parsing aman).
+    val celsius by remember {
+        derivedStateOf {
+            val v = activeText.toFloatOrNull() ?: 0f
+            when (activeField) {
+                SuhuField.CELSIUS    -> v
+                SuhuField.FAHRENHEIT -> (v - 32f) * 5f / 9f
+                SuhuField.KELVIN     -> v - 273.15f
+            }
+        }
+    }
 
-    // TODO 2b: bungkus kalkulasi F dan K dengan `remember { derivedStateOf { ... } }`
-    //          seperti pola `bmi` di BmiScreen.
-    val fahrenheit = 0f
-    val kelvin = 0f
+    val fahrenheit by remember { derivedStateOf { celsius * 9f / 5f + 32f } }
+    val kelvin by remember { derivedStateOf { celsius + 273.15f } }
+
+    val celsiusDisplay    = if (activeField == SuhuField.CELSIUS) activeText else "%.1f".format(celsius)
+    val fahrenheitDisplay = if (activeField == SuhuField.FAHRENHEIT) activeText else "%.1f".format(fahrenheit)
+    val kelvinDisplay     = if (activeField == SuhuField.KELVIN) activeText else "%.1f".format(kelvin)
 
     Column(
         modifier            = Modifier
@@ -70,20 +86,27 @@ fun SuhuScreen() {
         )
 
         OutlinedTextField(
-            value         = celsiusText,
-            onValueChange = { celsiusText = it },
+            value         = celsiusDisplay,
+            onValueChange = { activeField = SuhuField.CELSIUS; activeText = it },
             label         = { Text("Celsius (°C)") },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             modifier      = Modifier.fillMaxWidth()
         )
 
-        Text(
-            text  = "Fahrenheit: ${"%.1f".format(fahrenheit)} °F",
-            style = MaterialTheme.typography.titleMedium
+        OutlinedTextField(
+            value         = fahrenheitDisplay,
+            onValueChange = { activeField = SuhuField.FAHRENHEIT; activeText = it },
+            label         = { Text("Fahrenheit (°F)") },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            modifier      = Modifier.fillMaxWidth()
         )
-        Text(
-            text  = "Kelvin: ${"%.1f".format(kelvin)} K",
-            style = MaterialTheme.typography.titleMedium
+
+        OutlinedTextField(
+            value         = kelvinDisplay,
+            onValueChange = { activeField = SuhuField.KELVIN; activeText = it },
+            label         = { Text("Kelvin (K)") },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            modifier      = Modifier.fillMaxWidth()
         )
     }
 }
