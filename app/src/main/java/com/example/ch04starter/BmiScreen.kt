@@ -120,15 +120,16 @@ fun BmiScreen() {
                 Text("Hitung BMI")
             }
 
-            // TODO 1b: ganti blok di bawah ini jadi tombol Reset sungguhan.
-            //          Reset harus mengembalikan beratKg -> 60f, tinggiCm -> 165f,
-            //          dan isDihitung -> false.
-            // Button(
-            //     onClick  = { /* TODO: reset ke nilai default */ },
-            //     modifier = Modifier.weight(1f)
-            // ) {
-            //     Text("Reset")
-            // }
+            Button(
+                onClick  = {
+                    beratKg    = 60f
+                    tinggiCm   = 165f
+                    isDihitung = false
+                },
+                modifier = Modifier.weight(1f)
+            ) {
+                Text("Reset")
+            }
         }
 
         // AnimatedVisibility: fade-in saat isDihitung = true
@@ -164,10 +165,7 @@ fun BmiScreen() {
                     }
                 }
 
-                // TODO 1a: panggil composable tabel interpretasi BMI di sini,
-                //          misalnya InterpretasiBmiTable() — buat function-nya
-                //          sendiri di bawah, 4 baris (Kurus/Normal/Gemuk/Obesitas)
-                //          plus rentang nilainya masing-masing.
+                InterpretasiBmiTable()
             }
         }
     }
@@ -203,14 +201,40 @@ fun InputSlider(
     }
 }
 
-// TODO 1a: implementasikan composable ini.
-// @Composable
-// fun InterpretasiBmiTable() {
-//     // 4 baris: Kurus / Normal / Gemuk / Obesitas + rentang nilai masing-masing.
-//     // Boleh pakai Column + Row manual, atau lihat lagi cara render_table di
-//     // README chapter lain sebagai inspirasi tata letak (bukan kode Compose,
-//     // itu untuk generator slide — hanya untuk ide visual tabel).
-// }
+@Composable
+fun InterpretasiBmiTable() {
+    val baris = listOf(
+        "Kurus"    to "< 18.5",
+        "Normal"   to "18.5 – 24.9",
+        "Gemuk"    to "25.0 – 29.9",
+        "Obesitas" to "≥ 30.0"
+    )
+    Card(modifier = Modifier.fillMaxWidth()) {
+        Column(
+            modifier            = Modifier.padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            Text(
+                text       = "Interpretasi BMI",
+                style      = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold
+            )
+            baris.forEach { (nama, rentang) ->
+                Row(
+                    modifier              = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(nama, style = MaterialTheme.typography.bodyLarge)
+                    Text(
+                        text  = rentang,
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+            }
+        }
+    }
+}
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
