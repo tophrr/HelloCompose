@@ -14,6 +14,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
@@ -37,6 +39,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MainScreen() {
     var selectedTab by remember { mutableIntStateOf(0) }
+    val snackbarHostState = remember { SnackbarHostState() }
     val title = when (selectedTab) {
         0 -> "Kalkulator BMI"
         1 -> "Konversi Suhu"
@@ -45,6 +48,7 @@ fun MainScreen() {
 
     Scaffold(
         topBar = { TopAppBar(title = { Text(title) }) },
+        snackbarHost = { SnackbarHost(snackbarHostState) },
         bottomBar = {
             NavigationBar {
                 NavigationBarItem(
@@ -70,7 +74,7 @@ fun MainScreen() {
     ) { innerPadding ->
         Box(modifier = Modifier.padding(innerPadding)) {
             when (selectedTab) {
-                0 -> BmiScreen()
+                0 -> BmiScreen(snackbarHostState)
                 1 -> SuhuScreen()
                 else -> RegistrasiScreen()
             }

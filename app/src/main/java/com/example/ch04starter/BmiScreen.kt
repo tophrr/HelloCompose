@@ -16,11 +16,15 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -51,11 +55,12 @@ import com.example.ch04starter.ui.theme.Ch04StarterTheme
 // ============================================================================
 
 @Composable
-fun BmiScreen() {
+fun BmiScreen(snackbarHostState: SnackbarHostState) {
     // rememberSaveable: bertahan saat rotasi layar
-    var beratKg    by rememberSaveable { mutableFloatStateOf(60f) }
-    var tinggiCm   by rememberSaveable { mutableFloatStateOf(165f) }
-    var isDihitung by rememberSaveable { mutableStateOf(false) }
+    var beratKg     by rememberSaveable { mutableFloatStateOf(60f) }
+    var tinggiCm    by rememberSaveable { mutableFloatStateOf(165f) }
+    var isDihitung  by rememberSaveable { mutableStateOf(false) }
+    var hitungCount by rememberSaveable { mutableIntStateOf(0) }
 
     // derivedStateOf: hanya recompose saat nilai BMI benar-benar berubah
     val bmi by remember {
@@ -74,10 +79,16 @@ fun BmiScreen() {
         }
     }
 
-    // TODO 4: siapkan SnackbarHostState di sini (remember { SnackbarHostState() })
-    //         lalu tempatkan Scaffold(snackbarHost = { SnackbarHost(...) }) di
-    //         pemanggil, ATAU pindahkan BmiScreen jadi menerima SnackbarHostState
-    //         sebagai parameter (state hoisting!) dari MainScreen.
+    // Snackbar dipicu lewat LaunchedEffect yang mengamati `hitungCount`, bukan
+    // memanggil showSnackbar() langsung di dalam onClick.
+    LaunchedEffect(hitungCount) {
+        if (hitungCount > 0) {
+            snackbarHostState.showSnackbar(
+                message  = kategori,
+                duration = SnackbarDuration.Short
+            )
+        }
+    }
 
     Column(
         modifier            = Modifier
@@ -111,9 +122,7 @@ fun BmiScreen() {
             Button(
                 onClick  = {
                     isDihitung = true
-                    // TODO 4: trigger tampilan Snackbar di sini (lewat LaunchedEffect
-                    //         yang mengamati sebuah key, bukan langsung showSnackbar()
-                    //         di dalam onClick — kenapa? lihat lagi slide LaunchedEffect)
+                    hitungCount++
                 },
                 modifier = Modifier.weight(1f)
             ) {
@@ -239,5 +248,7 @@ fun InterpretasiBmiTable() {
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun BmiScreenPreview() {
-    Ch04StarterTheme { BmiScreen() }
+    Ch04StarterTheme {
+        BmiScreen(remember { SnackbarHostState() })
+    }
 }
