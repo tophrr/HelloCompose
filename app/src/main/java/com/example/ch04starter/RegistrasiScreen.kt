@@ -24,24 +24,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.ch04starter.ui.theme.Ch04StarterTheme
 
-// ============================================================================
-// TODO Pertemuan 4 — RegistrasiScreen (soal #3 di Tugas Pertemuan 4)
-//
-// Form registrasi: nama, email, password, konfirmasi password. Tombol
-// "Daftar" HARUS nonaktif (disabled) sampai semua validasi lolos — dihitung
-// dengan `derivedStateOf`, persis pola `bmi`/`kategori` di BmiScreen.
-//
-// Validasi yang perlu dicek (semua harus true sebelum Submit aktif):
-// [ ] 3a. `nama` tidak kosong
-// [ ] 3b. `email` mengandung karakter "@" (validasi sederhana, tidak perlu regex penuh)
-// [ ] 3c. `password` minimal 8 karakter
-// [ ] 3d. `konfirmasiPassword` sama persis dengan `password`
-// [ ] 3e. Gabungkan keempatnya jadi satu `derivedStateOf<Boolean>` bernama
-//         `isFormValid`, lalu pasang ke parameter `enabled` tombol Daftar
-//
-// Field sudah disiapkan di bawah (controlled input, sama seperti slide
-// TextField) — fokuskan energi kalian ke logika validasinya.
-// ============================================================================
+// RegistrasiScreen untuk form registrasi dengan validasi digabung memakai
+// derivedStateOf. tombol Daftar dinonaktifkan sampai semua validasi lolos
 
 @Composable
 fun RegistrasiScreen() {
@@ -104,7 +88,7 @@ fun RegistrasiScreen() {
         )
 
         Button(
-            onClick  = { /* TODO (opsional): aksi setelah submit, mis. tampilkan pesan sukses */ },
+            onClick  = { /* aksi submit dapat ditambahkan di sini */ },
             enabled  = isFormValid,
             modifier = Modifier.fillMaxWidth()
         ) {

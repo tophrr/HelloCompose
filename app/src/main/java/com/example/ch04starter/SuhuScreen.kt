@@ -22,29 +22,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.ch04starter.ui.theme.Ch04StarterTheme
 
-// ============================================================================
-// TODO Pertemuan 4 — SuhuScreen (soal #2 di Tugas Pertemuan 4)
-//
-// Kalkulator konversi suhu Celsius <-> Fahrenheit <-> Kelvin, memakai
-// `derivedStateOf` — sama seperti pola `bmi` di BmiScreen, tapi di sini
-// hasil derivasinya dipakai sebagai TAMPILAN saja (read-only), bukan input.
-//
-// Rumus yang perlu diimplementasikan:
-//   F = C * 9/5 + 32
-//   K = C + 273.15
-//
-// [ ] 2a. Field "Celsius" di bawah masih kosong logikanya — parse teks
-//         input jadi Float (hati-hati input tidak valid / kosong!)
-// [ ] 2b. Hitung `fahrenheit` dan `kelvin` dari `celsius` memakai
-//         `derivedStateOf`, lalu tampilkan di kedua Text di bawah field
-// [ ] (Tantangan, opsional) Jadikan ketiga field bisa DIKETIK bebas —
-//         Fahrenheit atau Kelvin pun boleh jadi sumber input. Hati-hati:
-//         kalau ketiganya saling mengisi satu sama lain secara langsung,
-//         bisa terjadi UPDATE MELINGKAR (circular update). Coba pikirkan
-//         cara melacak "field mana yang sedang aktif diketik" sebagai
-//         satu-satunya sumber kebenaran (single source of truth, ingat
-//         slide UDF), baru dua field lain murni derived dari situ.
-// ============================================================================
+// SuhuScreen untuk konversi Celsius/Fahrenheit/Kelvin. Field yang sedang aktif
+// diketik menjadi single source of truth, dan dua field lain derived
+// (derivedStateOf) sehingga tidak terjadi update melingkar.
 
 enum class SuhuField { CELSIUS, FAHRENHEIT, KELVIN }
 

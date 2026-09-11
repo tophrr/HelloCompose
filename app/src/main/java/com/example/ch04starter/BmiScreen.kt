@@ -37,22 +37,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.ch04starter.ui.theme.Ch04StarterTheme
 
-// ============================================================================
-// TODO Pertemuan 4 — BmiScreen (soal #1 & #4 di Tugas Pertemuan 4)
-//
-// Base kalkulator BMI di bawah ini SUDAH BERFUNGSI (baseline dari praktikum:
-// rememberSaveable untuk berat/tinggi/status hitung, derivedStateOf untuk
-// bmi & kategori). Tugas kalian menambahkan tiga hal ke atasnya:
-//
-// [ ] 1a. Tabel interpretasi BMI di bawah kartu hasil — 4 baris:
-//         Kurus (<18.5) / Normal (18.5–24.9) / Gemuk (25–29.9) / Obesitas (≥30)
-// [ ] 1b. Tombol "Reset" yang mengembalikan berat & tinggi ke nilai default
-//         (60 kg / 165 cm) dan menyembunyikan kartu hasil lagi
-// [ ] 4.  (Tantangan) Tampilkan Snackbar berisi kategori BMI selama 3 detik
-//         setiap kali tombol "Hitung BMI" ditekan, pakai LaunchedEffect
-//
-// Cari marker "TODO" di file ini untuk lokasi persisnya.
-// ============================================================================
+// BmiScreen untuk kalkulator BMI, tabel interpretasi, tombol Reset, dan Snackbar
+// kategori yang muncul saat tombol hitung ditekan.
 
 @Composable
 fun BmiScreen(snackbarHostState: SnackbarHostState) {
