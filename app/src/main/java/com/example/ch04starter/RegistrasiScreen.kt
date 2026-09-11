@@ -58,6 +58,7 @@ fun RegistrasiScreen() {
             value         = nama,
             onValueChange = { nama = it },
             label         = { Text("Nama Lengkap") },
+            singleLine    = true,
             modifier      = Modifier.fillMaxWidth()
         )
 
@@ -66,6 +67,7 @@ fun RegistrasiScreen() {
             onValueChange   = { email = it },
             label           = { Text("Email") },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+            singleLine      = true,
             modifier        = Modifier.fillMaxWidth()
         )
 
@@ -75,6 +77,7 @@ fun RegistrasiScreen() {
             label                = { Text("Password") },
             visualTransformation = PasswordVisualTransformation(),
             keyboardOptions      = KeyboardOptions(keyboardType = KeyboardType.Password),
+            singleLine           = true,
             modifier             = Modifier.fillMaxWidth()
         )
 
@@ -84,6 +87,7 @@ fun RegistrasiScreen() {
             label                = { Text("Konfirmasi Password") },
             visualTransformation = PasswordVisualTransformation(),
             keyboardOptions      = KeyboardOptions(keyboardType = KeyboardType.Password),
+            singleLine           = true,
             modifier             = Modifier.fillMaxWidth()
         )
 

@@ -70,6 +70,7 @@ fun SuhuScreen() {
             onValueChange = { activeField = SuhuField.CELSIUS; activeText = it },
             label         = { Text("Celsius (°C)") },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            singleLine    = true,
             modifier      = Modifier.fillMaxWidth()
         )
 
@@ -78,6 +79,7 @@ fun SuhuScreen() {
             onValueChange = { activeField = SuhuField.FAHRENHEIT; activeText = it },
             label         = { Text("Fahrenheit (°F)") },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            singleLine    = true,
             modifier      = Modifier.fillMaxWidth()
         )
 
@@ -86,6 +88,7 @@ fun SuhuScreen() {
             onValueChange = { activeField = SuhuField.KELVIN; activeText = it },
             label         = { Text("Kelvin (K)") },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            singleLine    = true,
             modifier      = Modifier.fillMaxWidth()
         )
     }
