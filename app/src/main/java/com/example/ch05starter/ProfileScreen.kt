@@ -42,11 +42,11 @@ fun ProfileScreen() {
             )
             Spacer(Modifier.height(16.dp))
             Text(
-                text  = "Mahasiswa Android",
+                text  = "Christopher G.",
                 style = MaterialTheme.typography.titleLarge
             )
             Text(
-                text  = "mahasiswa@kampus.ac.id",
+                text  = "01082240011@student.uph.edu",
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
