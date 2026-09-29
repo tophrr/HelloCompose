@@ -16,6 +16,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.ch06.home.HomeRoute
+import com.example.ch06.profile.ProfileRoute
 
 @Composable
 fun MainScreen() {
@@ -67,9 +68,7 @@ fun MainScreen() {
                 )
             }
             composable(Routes.Explore.route) { ExploreScreen() }
-            // TODO [T4.7] Ganti ProfileScreen() menjadi ProfileRoute(). Route-lah yang
-            //   membuat ProfileViewModel; NavController tidak diberikan ke ViewModel.
-            composable(Routes.Profile.route) { ProfileScreen() }
+            composable(Routes.Profile.route) { ProfileRoute() }
 
             composable(
                 route     = Routes.Detail.route,
