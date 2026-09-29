@@ -6,8 +6,7 @@ import com.example.ch06.data.Article
 data class HomeUiState(
     val isLoading: Boolean = false,
     val articles: List<Article> = emptyList(),
-    // TODO [T2.1] Tambahkan field `query: String = ""` di sini. Teks pencarian yang
-    //   sedang diketik hidup di UiState, bukan di composable.
+    val query: String = "",
     val errorMessage: String? = null
 ) {
     // TODO [T3.1] Tambahkan properti turunan `isEmptyResult: Boolean` (getter, BUKAN field

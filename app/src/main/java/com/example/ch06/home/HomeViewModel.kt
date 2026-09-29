@@ -2,6 +2,7 @@ package com.example.ch06.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.ch06.data.Article
 import com.example.ch06.data.ArticleRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -16,11 +17,8 @@ class HomeViewModel(
     private val _uiState = MutableStateFlow(HomeUiState(isLoading = true))
     val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
 
-    // TODO [T2.2] Simpan daftar LENGKAP hasil load di properti privat `allArticles`
-    //   (BUKAN di HomeUiState: UI hanya boleh melihat hasil yang SUDAH difilter).
-    //   Isi di refresh() saat sukses, lalu tampilkan hasil filter dengan query yang
-    //   SAAT INI ada, karena query yang sudah diketik tidak boleh hilang saat
-    //   refresh() dipanggil ulang.
+    // Daftar lengkap hasil load; UI hanya melihat hasil yang sudah difilter.
+    private var allArticles: List<Article> = emptyList()
 
     init {
         refresh()
@@ -32,8 +30,13 @@ class HomeViewModel(
 
             runCatching { repository.getArticles() }
                 .onSuccess { articles ->
-                    // TODO [T2.2] simpan `articles` ke allArticles + terapkan filter(query saat ini)
-                    _uiState.update { it.copy(isLoading = false, articles = articles) }
+                    allArticles = articles
+                    _uiState.update {
+                        it.copy(
+                            isLoading = false,
+                            articles = filter(allArticles, it.query)
+                        )
+                    }
                 }
                 .onFailure { error ->
                     _uiState.update {
@@ -46,8 +49,18 @@ class HomeViewModel(
         }
     }
 
-    // TODO [T2.3] Buat `fun onQueryChange(newQuery: String)`: perbarui `query` dan
-    //   `articles` di uiState. Tulis aturan filter sebagai fungsi privat
-    //   `filter(source, query)`: artikel cocok jika JUDUL atau KATEGORI mengandung
-    //   query, tidak peka huruf besar/kecil. Query kosong/blank = tampilkan semua.
+    fun onQueryChange(newQuery: String) {
+        _uiState.update {
+            it.copy(query = newQuery, articles = filter(allArticles, newQuery))
+        }
+    }
+
+    private fun filter(source: List<Article>, query: String): List<Article> {
+        val keyword = query.trim()
+        if (keyword.isEmpty()) return source
+        return source.filter {
+            it.title.contains(keyword, ignoreCase = true) ||
+                it.category.contains(keyword, ignoreCase = true)
+        }
+    }
 }

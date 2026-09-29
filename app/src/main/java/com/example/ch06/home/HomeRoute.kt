@@ -21,7 +21,7 @@ fun HomeRoute(
     HomeScreen(
         uiState = uiState,
         onArticleClick = onArticleClick,
-        // TODO [T2.5] Teruskan `onQueryChange = viewModel::onQueryChange` ke HomeScreen.
+        onQueryChange = viewModel::onQueryChange,
         onRetry = viewModel::refresh
     )
 }
