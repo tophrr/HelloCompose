@@ -61,6 +61,7 @@ fun HomeScreen(
                         message = uiState.errorMessage,
                         onRetry = onRetry
                     )
+                    uiState.isEmptyResult -> EmptyResultContent(uiState.query)
                     else -> ArticleList(
                         articles = uiState.articles,
                         onArticleClick = onArticleClick
@@ -113,6 +114,23 @@ private fun ErrorContent(message: String, onRetry: () -> Unit) {
         Text(text = message, style = MaterialTheme.typography.bodyLarge)
         Spacer(Modifier.height(12.dp))
         Button(onClick = onRetry) { Text("Coba Lagi") }
+    }
+}
+
+@Composable
+private fun EmptyResultContent(query: String) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(24.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = "Tidak ada artikel untuk \"$query\"",
+            style = MaterialTheme.typography.bodyLarge,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
     }
 }
 
