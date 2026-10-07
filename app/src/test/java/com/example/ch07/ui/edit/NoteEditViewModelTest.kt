@@ -73,4 +73,50 @@ class NoteEditViewModelTest {
         assertNotNull(vm.uiState.value.errorMessage)
         assertFalse(vm.uiState.value.isLoading)
     }
+
+    @Test fun `catatan baru - updatedAt juga diisi dari clock`() = runTest {
+        val repo = FakeNoteRepository()
+        val vm = NoteEditViewModel(repo, noteId = 0, clock = { 5_000L })
+
+        vm.onTitleChange("Rencana")
+        vm.save(); runCurrent()
+
+        assertEquals(5_000L, repo.current.single().updatedAt)
+    }
+
+    @Test fun `edit memperbarui updatedAt tanpa menyentuh createdAt`() = runTest {
+        val existing = NoteEntity(id = 3, title = "Lama", content = "isi lama",
+            createdAt = 1_000L, updatedAt = 1_000L, isPinned = true)
+        val repo = FakeNoteRepository(listOf(existing))
+        val vm = NoteEditViewModel(repo, noteId = 3, clock = { 9_000L })
+        runCurrent()
+
+        vm.onTitleChange("Baru")
+        vm.save(); runCurrent()
+
+        val saved = repo.current.single()
+        assertEquals(9_000L, saved.updatedAt)
+        assertEquals(1_000L, saved.createdAt)
+    }
+
+    @Test fun `tag diurai saat menyimpan catatan baru`() = runTest {
+        val repo = FakeNoteRepository()
+        val vm = NoteEditViewModel(repo, noteId = 0, clock = { 5_000L })
+
+        vm.onTitleChange("Fisika")
+        vm.onTagsChange("Kuliah, #Ide,  kuliah ,,")
+        vm.save(); runCurrent()
+
+        assertEquals(listOf("kuliah", "ide"), repo.current.single().tags)
+    }
+
+    @Test fun `tag lama dimuat ke form saat mengedit`() = runTest {
+        val existing = NoteEntity(id = 3, title = "Lama", content = "isi",
+            createdAt = 1_000L, updatedAt = 1_000L, tags = listOf("kuliah", "ide"))
+        val repo = FakeNoteRepository(listOf(existing))
+        val vm = NoteEditViewModel(repo, noteId = 3, clock = { 9_000L })
+        runCurrent()
+
+        assertEquals("kuliah, ide", vm.uiState.value.tagsText)
+    }
 }

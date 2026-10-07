@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -15,14 +16,23 @@ import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
@@ -38,17 +48,29 @@ fun NoteListScreen(
     onAddNote: () -> Unit,
     onEditNote: (Int) -> Unit,
     onDeleteNote: (NoteEntity) -> Unit,
-    // TODO [T2.3] Tambahkan parameter onUndoDelete: () -> Unit dan onUndoDismissed: () -> Unit.
-    // TODO [T4.7] Tambahkan parameter onTagSelected: (String?) -> Unit.
+    onUndoDelete: () -> Unit,
+    onUndoDismissed: () -> Unit,
+    onTagSelected: (String?) -> Unit,
     onTogglePin: (NoteEntity) -> Unit
 ) {
-    // TODO [T2.3] Buat SnackbarHostState dan pasang di Scaffold (snackbarHost = ...).
-    //   Gunakan LaunchedEffect(uiState.recentlyDeleted): jika tidak null, tampilkan
-    //   showSnackbar(message = "Catatan dihapus", actionLabel = "Batalkan").
-    //   ActionPerformed -> onUndoDelete(); selain itu -> onUndoDismissed().
-    //   Petunjuk: bungkus callback dengan rememberUpdatedState agar tidak basi.
+    val snackbarHostState = remember { SnackbarHostState() }
+    val currentUndoDelete by rememberUpdatedState(onUndoDelete)
+    val currentUndoDismissed by rememberUpdatedState(onUndoDismissed)
+
+    LaunchedEffect(uiState.recentlyDeleted) {
+        if (uiState.recentlyDeleted == null) return@LaunchedEffect
+        val result = snackbarHostState.showSnackbar(
+            message = "Catatan dihapus",
+            actionLabel = "Batalkan",
+            duration = SnackbarDuration.Short
+        )
+        if (result == SnackbarResult.ActionPerformed) currentUndoDelete()
+        else currentUndoDismissed()
+    }
+
     Scaffold(
         topBar = { TopAppBar(title = { Text("CatatanKu") }) },
+        snackbarHost = { SnackbarHost(snackbarHostState) },
         floatingActionButton = {
             FloatingActionButton(onClick = onAddNote) {
                 Icon(Icons.Filled.Add, contentDescription = "Tambah catatan")
@@ -68,9 +90,29 @@ fun NoteListScreen(
                     .padding(horizontal = 16.dp, vertical = 8.dp)
             )
 
-            // TODO [T4.7] Jika uiState.availableTags tidak kosong, tampilkan baris
-            //   filter chip (LazyRow + FilterChip): "Semua" lalu "#tag" untuk tiap tag;
-            //   chip terpilih = uiState.selectedTag; ketuk -> onTagSelected(...).
+            // Baris filter tag: "Semua" + tiap tag yang dipakai catatan
+            if (uiState.availableTags.isNotEmpty()) {
+                LazyRow(
+                    contentPadding = PaddingValues(horizontal = 16.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    item {
+                        FilterChip(
+                            selected = uiState.selectedTag == null,
+                            onClick = { onTagSelected(null) },
+                            label = { Text("Semua") }
+                        )
+                    }
+                    items(uiState.availableTags) { tag ->
+                        FilterChip(
+                            selected = uiState.selectedTag == tag,
+                            onClick = { onTagSelected(tag) },
+                            label = { Text("#$tag") }
+                        )
+                    }
+                }
+            }
 
             when {
                 uiState.isLoading -> Box(
@@ -85,14 +127,14 @@ fun NoteListScreen(
                 uiState.notes.isEmpty() -> CenteredMessage(emptyMessage(uiState))
 
                 else -> {
-                    // TODO [T3.5] Hitung `val now = remember(uiState.notes) { System.currentTimeMillis() }`
-                    //   lalu kirim ke NoteCard(now = now, ...).
+                    val now = remember(uiState.notes) { System.currentTimeMillis() }
                     LazyColumn(
                         contentPadding = PaddingValues(16.dp),
                         verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         items(uiState.notes, key = { it.id }) { note ->
                             NoteCard(
+                                now = now,
                                 note = note,
                                 onClick = { onEditNote(note.id) },
                                 onDelete = { onDeleteNote(note) },
@@ -106,9 +148,11 @@ fun NoteListScreen(
     }
 }
 
-// Pesan kosong dibedakan: belum ada catatan sama sekali vs hasil pencarian kosong
-// TODO [T4.7] Tambahkan cabang untuk filter tag: "Tidak ada catatan dengan tag #..."
+// Pesan kosong dibedakan: belum ada catatan, filter tag, vs hasil pencarian kosong
 private fun emptyMessage(uiState: NoteListUiState): String = when {
+    uiState.selectedTag != null && uiState.query.isNotBlank() ->
+        "Tidak ada catatan bertag #${uiState.selectedTag} yang cocok dengan \"${uiState.query}\""
+    uiState.selectedTag != null -> "Tidak ada catatan dengan tag #${uiState.selectedTag}"
     !uiState.isFiltering -> "Belum ada catatan. Ketuk + untuk memulai."
     else -> "Tidak ada catatan yang cocok dengan \"${uiState.query}\""
 }

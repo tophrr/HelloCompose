@@ -1,5 +1,11 @@
 # Ch07 Starter — CatatanKu dengan Room
 
+**Christopher M. M. Gijoh - 01082240011**
+
+> Mata kuliah Mobile Platform Apps Development
+> Informatika 2024
+
+
 Titik awal Praktikum Pertemuan 7. Aplikasi **CatatanKu** sudah berjalan dengan
 Room di **skema versi 1**: daftar catatan, form tambah/edit, pin, hapus, dan
 pencarian real-time (Tugas 1 sudah ada). Yang harus kamu kerjakan adalah
@@ -24,33 +30,33 @@ sehingga daftar itu **kosong** saat kamu selesai.
 
 | ID | File | Yang harus dikerjakan |
 |---|---|---|
-| [ ] **T2.1** | `ui/list/NoteListViewModel.kt` | `NoteListUiState`: tambah `recentlyDeleted: NoteEntity? = null` |
-| [ ] **T2.2** | `ui/list/NoteListViewModel.kt` | Simpan `recentlyDeleted` sebagai `MutableStateFlow`, masukkan ke `combine`; `deleteNote()` mengisinya setelah menghapus; tambah `undoDelete()` (masukkan kembali catatan yang **sama**, id ikut kembali) dan `onUndoDismissed()` |
-| [ ] **T2.3** | `ui/list/NoteListScreen.kt` | `SnackbarHostState` + `LaunchedEffect(uiState.recentlyDeleted)`: tampilkan "Catatan dihapus" dengan tombol **Batalkan**; tekan → `onUndoDelete()`, hilang sendiri → `onUndoDismissed()` |
-| [ ] **T2.4** | `ui/list/NoteListRoute.kt` | Teruskan `viewModel::undoDelete` dan `viewModel::onUndoDismissed` |
+| [x] **T2.1** | `ui/list/NoteListViewModel.kt` | `NoteListUiState`: tambah `recentlyDeleted: NoteEntity? = null` |
+| [x] **T2.2** | `ui/list/NoteListViewModel.kt` | Simpan `recentlyDeleted` sebagai `MutableStateFlow`, masukkan ke `combine`; `deleteNote()` mengisinya setelah menghapus; tambah `undoDelete()` (masukkan kembali catatan yang **sama**, id ikut kembali) dan `onUndoDismissed()` |
+| [x] **T2.3** | `ui/list/NoteListScreen.kt` | `SnackbarHostState` + `LaunchedEffect(uiState.recentlyDeleted)`: tampilkan "Catatan dihapus" dengan tombol **Batalkan**; tekan → `onUndoDelete()`, hilang sendiri → `onUndoDismissed()` |
+| [x] **T2.4** | `ui/list/NoteListRoute.kt` | Teruskan `viewModel::undoDelete` dan `viewModel::onUndoDismissed` |
 
 ### Tugas 3 — Kolom `updatedAt` dan "Diubah 3 jam lalu"
 
 | ID | File | Yang harus dikerjakan |
 |---|---|---|
-| [ ] **T3.1** | `data/NoteEntity.kt` | Tambah `updatedAt: Long = createdAt` |
-| [ ] **T3.2** | `data/NoteDatabase.kt` | Naikkan versi + `Migration` yang menambah kolom (`INTEGER NOT NULL DEFAULT 0`) lalu `UPDATE notes SET updatedAt = createdAt`; ganti `fallbackToDestructiveMigration()` dengan `addMigrations(...)` |
-| [ ] **T3.3** | `util/RelativeTime.kt` | Implementasikan `formatRelativeTime(now, then)`: *baru saja*, *N menit/jam/hari/bulan/tahun lalu* |
-| [ ] **T3.4** | `ui/edit/NoteEditViewModel.kt` | Isi/perbarui `updatedAt = now` saat menyimpan (catatan baru **dan** edit) |
-| [ ] **T3.5** | `ui/list/NoteCard.kt`, `NoteListScreen.kt` | Parameter `now` di `NoteCard`; tampilkan "Diubah …" |
+| [x] **T3.1** | `data/NoteEntity.kt` | Tambah `updatedAt: Long = createdAt` |
+| [x] **T3.2** | `data/NoteDatabase.kt` | Naikkan versi + `Migration` yang menambah kolom (`INTEGER NOT NULL DEFAULT 0`) lalu `UPDATE notes SET updatedAt = createdAt`; ganti `fallbackToDestructiveMigration()` dengan `addMigrations(...)` |
+| [x] **T3.3** | `util/RelativeTime.kt` | Implementasikan `formatRelativeTime(now, then)`: *baru saja*, *N menit/jam/hari/bulan/tahun lalu* |
+| [x] **T3.4** | `ui/edit/NoteEditViewModel.kt` | Isi/perbarui `updatedAt = now` saat menyimpan (catatan baru **dan** edit) |
+| [x] **T3.5** | `ui/list/NoteCard.kt`, `NoteListScreen.kt` | Parameter `now` di `NoteCard`; tampilkan "Diubah …" |
 
 ### Tugas 4 (Tantangan) — Tag/label dengan TypeConverter
 
 | ID | File | Yang harus dikerjakan |
 |---|---|---|
-| [ ] **T4.1** | `data/NoteEntity.kt` | Tambah `tags: List<String> = emptyList()` |
-| [ ] **T4.2** | `data/Converters.kt` *(baru)*, `NoteDatabase.kt` | `TypeConverter` `List<String>` ⇄ JSON (Gson, dependensinya sudah ada); daftarkan dengan `@TypeConverters` |
-| [ ] **T4.3** | `data/NoteDatabase.kt` | Naikkan versi + `Migration`: `ALTER TABLE notes ADD COLUMN tags TEXT NOT NULL DEFAULT '[]'` |
-| [ ] **T4.4** | `util/Tags.kt` | Implementasikan `parseTags()` dan `formatTags()` |
-| [ ] **T4.5** | `NoteEditViewModel/Screen/Route` | Field tag di form (`tagsText`, `onTagsChange`), diurai dengan `parseTags()` saat menyimpan, dimuat dengan `formatTags()` saat mengedit |
-| [ ] **T4.6** | `ui/list/NoteListViewModel.kt`, `NoteListRoute.kt` | `availableTags`, `selectedTag`, `onTagSelected()`; ketuk tag aktif melepas filter; tag yang tak dipakai lagi otomatis dilepas; `isFiltering` ikut memperhitungkan tag |
-| [ ] **T4.7** | `ui/list/NoteListScreen.kt` | Baris filter chip (`Semua`, `#tag`…) + pesan kosong untuk filter tag |
-| [ ] **T4.8** | `ui/list/NoteCard.kt` | Tampilkan tag (`#kuliah  #ide`) |
+| [x] **T4.1** | `data/NoteEntity.kt` | Tambah `tags: List<String> = emptyList()` |
+| [x] **T4.2** | `data/Converters.kt` *(baru)*, `NoteDatabase.kt` | `TypeConverter` `List<String>` ⇄ JSON (Gson, dependensinya sudah ada); daftarkan dengan `@TypeConverters` |
+| [x] **T4.3** | `data/NoteDatabase.kt` | Naikkan versi + `Migration`: `ALTER TABLE notes ADD COLUMN tags TEXT NOT NULL DEFAULT '[]'` |
+| [x] **T4.4** | `util/Tags.kt` | Implementasikan `parseTags()` dan `formatTags()` |
+| [x] **T4.5** | `NoteEditViewModel/Screen/Route` | Field tag di form (`tagsText`, `onTagsChange`), diurai dengan `parseTags()` saat menyimpan, dimuat dengan `formatTags()` saat mengedit |
+| [x] **T4.6** | `ui/list/NoteListViewModel.kt`, `NoteListRoute.kt` | `availableTags`, `selectedTag`, `onTagSelected()`; ketuk tag aktif melepas filter; tag yang tak dipakai lagi otomatis dilepas; `isFiltering` ikut memperhitungkan tag |
+| [x] **T4.7** | `ui/list/NoteListScreen.kt` | Baris filter chip (`Semua`, `#tag`…) + pesan kosong untuk filter tag |
+| [x] **T4.8** | `ui/list/NoteCard.kt` | Tampilkan tag (`#kuliah  #ide`) |
 
 ### Migration: nomor versi mengikuti urutan pengerjaanmu
 
@@ -90,23 +96,23 @@ tes serupa (contoh lengkap di `praktikum/ch07`).
 Jalankan aplikasi di emulator, lalu periksa satu per satu:
 
 **Tugas 2**
-- [ ] Hapus sebuah catatan → muncul Snackbar "Catatan dihapus" dengan **Batalkan**.
-- [ ] Tekan **Batalkan** → catatan kembali **persis sama** (isi, pin, tag, posisi).
-- [ ] Biarkan Snackbar hilang → catatan tetap terhapus.
+- [x] Hapus sebuah catatan → muncul Snackbar "Catatan dihapus" dengan **Batalkan**.
+- [x] Tekan **Batalkan** → catatan kembali **persis sama** (isi, pin, tag, posisi).
+- [x] Biarkan Snackbar hilang → catatan tetap terhapus.
 
 **Tugas 3**
-- [ ] Kartu menampilkan "Diubah baru saja" untuk catatan yang baru dibuat/diubah.
-- [ ] Mengedit catatan memperbarui waktunya; **menyematkan tidak** mengubahnya.
-- [ ] Catatan dari versi lama (sebelum migration) tidak tampil sebagai "puluhan tahun lalu".
+- [x] Kartu menampilkan "Diubah baru saja" untuk catatan yang baru dibuat/diubah.
+- [x] Mengedit catatan memperbarui waktunya; **menyematkan tidak** mengubahnya.
+- [x] Catatan dari versi lama (sebelum migration) tidak tampil sebagai "puluhan tahun lalu".
 
 **Tugas 4**
-- [ ] Isi tag `Kuliah, #Ide, kuliah` → tersimpan sebagai `#kuliah  #ide` (huruf kecil, tanpa duplikat).
-- [ ] Baris chip menampilkan `Semua` dan semua tag; ketuk `#kuliah` → hanya catatan bertag itu; ketuk lagi → semua kembali.
-- [ ] Filter tag bekerja bersama pencarian; hapus catatan bertag terakhir → chip-nya hilang.
+- [x] Isi tag `Kuliah, #Ide, kuliah` → tersimpan sebagai `#kuliah  #ide` (huruf kecil, tanpa duplikat).
+- [x] Baris chip menampilkan `Semua` dan semua tag; ketuk `#kuliah` → hanya catatan bertag itu; ketuk lagi → semua kembali.
+- [x] Filter tag bekerja bersama pencarian; hapus catatan bertag terakhir → chip-nya hilang.
 
 **Kode**
-- [ ] Jendela TODO kosong, `./gradlew assembleDebug` sukses, dan `./gradlew testDebugUnitTest` hijau semua.
-- [ ] Data tetap ada setelah aplikasi ditutup total dan dibuka kembali.
+- [x] Jendela TODO kosong, `./gradlew assembleDebug` sukses, dan `./gradlew testDebugUnitTest` hijau semua.
+- [x] Data tetap ada setelah aplikasi ditutup total dan dibuka kembali.
 
 **Pengumpulan:** push ke branch `pertemuan-7` → kumpulkan link di LMS sebelum
 pertemuan berikutnya.
